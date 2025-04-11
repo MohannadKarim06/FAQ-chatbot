@@ -1,7 +1,3 @@
-Absolutely! Here’s a polished, professional **README.md** for your **FAQ Chatbot** — tailored for GitHub, Upwork, and client demos.
-
----
-
 ## 🤖 FAQ Chatbot  
 **Flagship NLP & MLOps Project (10/10)**  
 > A multilingual, document-based FAQ chatbot powered by semantic search and a transformer-based language model. Upload your own FAQ file and chat with it in real time.
