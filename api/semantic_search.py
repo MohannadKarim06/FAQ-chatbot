@@ -2,11 +2,12 @@ from sentence_transformers import SentenceTransformer
 import pandas as pd
 import faiss
 import numpy as np
-import sys
+import sys, os
+
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from config import ConfigManger
+
+from config.config import ConfigManger
 from logs.logger import log_event
-import os
 
 config = ConfigManger()
 
@@ -38,17 +39,13 @@ def search_faq(query, faq_source):
         if not os.path.exists(index_path):
             return None, 0  
 
-        # Load FAISS index
         index = faiss.read_index(index_path)
 
-        # Encode the query
         query_embedding = model.encode([query])
         query_embedding = np.array(query_embedding, dtype="float32")
 
-        # Search the index
         distances, indices = index.search(query_embedding, k=1)  
 
-        # Retrieve answer
         faq_answers = df["answer"].tolist()
         retrieved_answer = faq_answers[indices[0][0]] if len(indices[0]) > 0 else None
         score = distances[0][0] if len(distances[0]) > 0 else 0  

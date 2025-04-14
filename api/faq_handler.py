@@ -74,9 +74,13 @@ def embed_questions(df):
 
     faiss.write_index(index, uploaded_faiss_index_file)
 
+    return None
+
 
 def save_file(df):
     df.to_csv(uploaded_faqs, index=False)
+
+    return None
 
 
 def handle_faqs(df):

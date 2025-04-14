@@ -10,7 +10,7 @@ translator_ar_en = GoogleTranslator(source="ar", target="en")
 
 def translate_to_english(text):
     try:
-        text = translator_ar_en(text)
+        text = translator_ar_en.translate(text)
 
         return text
     
@@ -20,7 +20,7 @@ def translate_to_english(text):
 
 def translate_to_arabic(text):
     try:
-        text = translator_en_ar(text)
+        text = translator_en_ar.translate(text)
 
         return text
     except Exception as e:

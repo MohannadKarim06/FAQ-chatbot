@@ -1,22 +1,24 @@
-from semantic_search import search_faq
-from models.mistral_model import model_response
 import sys, os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
+from api.semantic_search import search_faq
+from models.mistral_model import model_response
+from logs.logger import log_event
+
+conversation_history = [] 
+
 
 def chat_with_bot(prompt, faq_source):
     
-    conversation_history = [] 
+   try:
+      retrieved_answer, score = search_faq(query=prompt, faq_source=faq_source)
+   except Exception as e:
+      log_event("ERROR", f"an error happend while searching faqs: {e}")
+   
+   formatted_history = "\n".join([f"User: {msg['user']}\nBot: {msg['bot']}" for msg in conversation_history])
 
-    # Retrieve FAQ answer
-    retrieved_answer, score = search_faq(query=prompt, faq_source=faq_source)
-
-    # Format history for the model
-    formatted_history = "\n".join([f"User: {msg['user']}\nBot: {msg['bot']}" for msg in conversation_history])
-
-    # Select instructions based on confidence score
-    if score < 2:
+   if score < 1.4:
       instructions = f"""
 You are an AI assistant that answers user questions conversationally.
 You also have access to a knowledge base of FAQs. Your job is to:
@@ -47,8 +49,8 @@ You also have access to a knowledge base of FAQs. Your job is to:
 Now, generate your response following these rules.
 """
 
-    else:
-        instructions = f"""
+   else:
+      instructions = f"""
         You are an AI assistant engaged in an ongoing conversation with The user.
         Below is the conversation history:
         {formatted_history}
@@ -59,15 +61,18 @@ Now, generate your response following these rules.
         - Provide a helpful response using general knowledge.
         - Maintain conversational flow and ask clarifying questions if needed.
         """
-
+  
+   try:
+      response = model_response(instructions)
+   except Exception as e:
+      log_event("ERROR", f"an error occured while getting model response: {e}")
     
-    response = model_response(instructions=instructions)
+   conversation_history.append({"user": prompt, "bot": response})
+   
+   log_event("HISTORY", conversation_history)
 
-    
-    conversation_history.append({"user": prompt, "bot": response})
 
-    return response, score
-
+   return response, score
 
 
 
