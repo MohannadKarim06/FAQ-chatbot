@@ -9,7 +9,7 @@ class ConfigManger:
     
     
     def get_default_faqs_file(self):
-        default_faq_data_path = self.config["data"]["default_faqs"]
+        default_faq_path = self.config["data"]["default_faqs"]
         return default_faq_path
     
 
