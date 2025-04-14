@@ -6,9 +6,6 @@ import pandas as pd
 import string
 import unicodedata
 import html
-import collections
-import collections.abc
-collections.Sequence = collections.abc.Sequence
 from tqdm import tqdm
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
