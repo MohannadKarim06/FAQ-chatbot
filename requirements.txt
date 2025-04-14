@@ -1,12 +1,9 @@
-# ✅ FastAPI Core
 fastapi==0.110.0
 uvicorn==0.32.0
 pydantic==2.7.1
 python-dotenv
 python-multipart
 PyYAML==6.0.1
-
-# ✅ NLP & Utilities
 faiss-cpu==1.7.4
 numpy==1.26.4
 pandas==2.2.1
@@ -16,3 +13,4 @@ langdetect==1.0.9
 sumy==0.9.0
 deep-translator==1.11.4
 contractions==0.1.73
+transformers==4.40.1
