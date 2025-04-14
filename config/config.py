@@ -10,14 +10,12 @@ class ConfigManger:
     
     def get_default_faqs_file(self):
         default_faq_data_path = self.config["data"]["default_faqs"]
-        default_faq = r"{}".format(default_faq_data_path)
-        return default_faq
+        return default_faq_path
     
 
     def get_uploaded_faqs_file(self):
         uploaded_faqs_path = self.config["data"]["uploaded_faqs"]
-        uploaded_faqs = r"{}".format(uploaded_faqs_path)
-        return uploaded_faqs
+        return uploaded_faqs_path
     
 
     def get_hf_api_key(self):
