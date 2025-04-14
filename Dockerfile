@@ -1,23 +1,21 @@
-FROM python:3.10-slim
+# Use Hugging Face base image with torch + transformers pre-installed
+FROM huggingface/transformers-pytorch-gpu:4.40.1
 
+# Disable GPU (Fly has no GPU)
+ENV TRANSFORMERS_NO_GPU=true
+
+# Create working directory
 WORKDIR /app
 
-# Install only necessary system packages
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libglib2.0-0 libsm6 libxext6 libxrender-dev \
-    && rm -rf /var/lib/apt/lists/*
-
-# Install dependencies early to leverage Docker caching
+# Install remaining lightweight dependencies
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
-
-# Copy entire project
+# Copy only necessary app code
 COPY . .
 
 # Expose FastAPI port
 EXPOSE 8000
 
-# Start the API
+# Start FastAPI app
 CMD ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
