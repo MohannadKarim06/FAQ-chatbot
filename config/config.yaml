@@ -1,5 +1,5 @@
 models:
-  embeddings_model: "all-MiniLM-L6-v2"
+  embeddings_model: "sentence-transformers/all-MiniLM-L6-v2"
   chatbot_model: "mistral_7b"
 data:
   default_faqs: "data\\default_faqs.csv"
