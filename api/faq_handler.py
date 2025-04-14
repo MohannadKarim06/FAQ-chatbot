@@ -7,6 +7,10 @@ import string
 import unicodedata
 import html
 from tqdm import tqdm
+import contractions
+import collections
+import collections.abc
+collections.Sequence = collections.abc.Sequence
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.text_rank import TextRankSummarizer
