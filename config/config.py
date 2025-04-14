@@ -35,13 +35,11 @@ class ConfigManger:
 
     def get_uploaded_faqs_faiss_index(self):
         uploaded_faqs_index = self.config["data"]["uploaded_faqs_embedddings"]
-        uploaded_faqs_index = r"{}".format(uploaded_faqs_index)
         return uploaded_faqs_index
     
 
     def get_default_faqs_faiss_index(self):
         default_faqs_embedddings = self.config["data"]["default_faqs_embedddings"]
-        default_faqs_embedddings = r"{}".format(default_faqs_embedddings)
         return default_faqs_embedddings
     
 
