@@ -3,8 +3,8 @@ import os, sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 class ConfigManger:
-    def __init__(self, confing_path="config/config.yaml"):
-        with open(confing_path, "r") as f:
+    def __init__(self, config_path="config/config.yaml"):
+        with open(config_path, "r") as f:
             self.config = yaml.safe_load(f)
     
     
