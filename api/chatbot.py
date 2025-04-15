@@ -6,61 +6,63 @@ from api.semantic_search import search_faq
 from models.mistral_model import model_response
 from logs.logger import log_event
 
-conversation_history = [] 
-
+conversation_history = []
 
 def chat_with_bot(prompt, faq_source):
-    
-   try:
-      retrieved_answer, score = search_faq(query=prompt, faq_source=faq_source)
-   except Exception as e:
-      log_event("ERROR", f"an error happend while searching faqs: {e}")
-   
+    try:
+        retrieved_answer, score = search_faq(query=prompt, faq_source=faq_source)
+    except Exception as e:
+        log_event("ERROR", f"An error occurred while searching FAQs: {e}")
+        retrieved_answer, score = "No relevant FAQ found.", 0.0
 
-   formatted_history = "\n".join([f"User: {msg['user']}\nBot: {msg['bot']}" for msg in conversation_history])
+    formatted_history = "\n".join([
+        f"User: {msg['user']}\nBot: {msg['bot']}" for msg in conversation_history
+    ])
 
-   if score < 1:
-      relevance_score = "High Relevance"
-   elif score < 1.5:
-      relevance_score= "Medium Relevance"
-   else:
-      relevance_score = "Low Relevance"
+    instructions = f"""
+You are an AI assistant that helps users by engaging in conversation and answering support-related questions using a provided FAQ knowledge base.
 
-   instructions = f"""
-You are a helpful assistant that answers user questions using a FAQ.
+🔸 Your behavior is as follows:
 
-Only use the provided FAQ answer. If it’s not relevant, say: "Sorry, I couldn’t find an answer in the FAQs."
+1️⃣ **Small Talk & Casual Conversation**:
+- If the user greets you or engages in casual conversation, respond naturally and warmly.
+- You can chat like a friendly assistant — jokes, comments, etc. — as long as it's not giving factual answers.
+- ✅ Do **not** use the FAQ in these responses.
+
+2️⃣ **FAQ-based Answering**:
+- If the user asks a support, product, or policy-related question, use the **retrieved FAQ answer** only.
+- Rephrase the FAQ answer in a natural way, but **do not add any new information**.
+- ❌ Do **not** use external or general knowledge.
+- If the FAQ answer doesn’t clearly answer the question, say:
+  > "I’m sorry, I couldn’t find an answer to that in the FAQs."
+
+3️⃣ **Conversation Context**:
+- Use previous messages (below) to understand what the user is asking.
+- Keep your tone friendly and concise.
 
 ---
 
-History: {formatted_history}
-Question: {prompt}
-FAQ: {retrieved_answer}
+### 💬 Conversation History:
+{formatted_history}
 
-Answer:
-""".strip()
-   
-   try:
-      response = model_response(instructions)
-   except Exception as e:
-      log_event("ERROR", f"an error occured while getting model response: {e}")
-    
-   conversation_history.append({"user": prompt, "bot": response})
-   
-   log_event("HISTORY", conversation_history)
+### ❓ User Question:
+"{prompt}"
 
+### 📄 Retrieved FAQ Answer:
+"{retrieved_answer}"
 
-   return response, score
+---
 
+### 🗨️ Your Response:
+"""
 
+    try:
+        response = model_response(prompt=prompt, instructions=instructions)
+    except Exception as e:
+        log_event("ERROR", f"An error occurred while getting model response: {e}")
+        response = "Sorry, there was an error generating a response."
 
+    conversation_history.append({"user": prompt, "bot": response})
+    log_event("HISTORY", conversation_history)
 
-
-
-
-
-
-
-
-
-
+    return response, score
