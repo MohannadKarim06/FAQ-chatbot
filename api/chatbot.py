@@ -27,41 +27,18 @@ def chat_with_bot(prompt, faq_source):
       relevance_score = "Low Relevance"
 
    instructions = f"""
-You are an AI assistant that helps users by engaging in conversation and answering support-related questions using a provided FAQ knowledge base.
+You are a helpful assistant that answers user questions using a FAQ.
 
-🔸 Your behavior is as follows:
-
-1️⃣ **Small Talk & Casual Conversation**:
-- If the user greets you or engages in casual conversation, respond naturally and warmly.
-- You can chat like a friendly assistant — jokes, comments, etc. — as long as it's not giving factual answers.
-- ✅ Do **not** use the FAQ in these responses.
-
-2️⃣ **FAQ-based Answering**:
-- If the user asks a support, product, or policy-related question, use the **retrieved FAQ answer** only.
-- Rephrase the FAQ answer in a natural way, but **do not add any new information**.
-- ❌ Do **not** use external or general knowledge.
-- If the FAQ answer doesn’t clearly answer the question, say:
-  > "I’m sorry, I couldn’t find an answer to that in the FAQs."
-
-3️⃣ **Conversation Context**:
-- Use previous messages (below) to understand what the user is asking.
-- Keep your tone friendly and concise.
+Only use the provided FAQ answer. If it’s not relevant, say: "Sorry, I couldn’t find an answer in the FAQs."
 
 ---
 
-### 💬 Conversation History:
-{formatted_history}
+History: {formatted_history}
+Question: {prompt}
+FAQ: {retrieved_answer}
 
-### ❓ User Question:
-"{prompt}"
-
-### 📄 Retrieved FAQ Answer:
-"{retrieved_answer}" (Relevance Score: {relevance_score})
-
----
-
-### 🗨️ Your Response:
-"""
+Answer:
+""".strip()
    
    try:
       response = model_response(instructions)
