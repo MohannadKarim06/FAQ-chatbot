@@ -12,7 +12,6 @@ from logs.logger import log_event
 
 config = ConfigManger()
 
-# Load HF model + tokenizer once
 model_name = config.get_embeddings_model_name()
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 model = AutoModel.from_pretrained(model_name)
@@ -54,7 +53,7 @@ def search_faq(query, faq_source):
             log_event("ERROR", "Invalid FAQ source. Choose 'default' or 'uploaded'.")
             raise ValueError("Invalid FAQ source. Choose 'default' or 'uploaded'.")
         
-        log_event("DEBUG", f"Looking for {faq_source} index at {index_path}:)            
+        log_event("DEBUG", f"Looking for {faq_source} index at {index_path}")            
         if not os.path.exists(index_path):
             log_event("ERROR", f"{faq_source} FAQ index not found.")
             return None, 0  
