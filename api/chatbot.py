@@ -9,7 +9,16 @@ from logs.logger import log_event
 conversation_history = [] 
 
 
-instructions = f"""
+def chat_with_bot(prompt, faq_source):
+    
+   try:
+      retrieved_answer, score = search_faq(query=prompt, faq_source=faq_source)
+   except Exception as e:
+      log_event("ERROR", f"an error happend while searching faqs: {e}")
+   
+   formatted_history = "\n".join([f"User: {msg['user']}\nBot: {msg['bot']}" for msg in conversation_history])
+
+   instructions = f"""
 You are an AI assistant that helps users by engaging in conversation and answering support-related questions using a provided FAQ knowledge base.
 
 🔸 Your behavior is as follows:
@@ -43,8 +52,7 @@ You are an AI assistant that helps users by engaging in conversation and answeri
 
 Your job: respond naturally using the above guidelines.
 """
-
-  
+   
    try:
       response = model_response(instructions)
    except Exception as e:
