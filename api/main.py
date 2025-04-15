@@ -58,7 +58,7 @@ def chat_endpoint(request: ChatRequest):
 
     return {
         "response": response,
-        "score": float(score)
+        "score": f"{score}"
     } 
 
     
