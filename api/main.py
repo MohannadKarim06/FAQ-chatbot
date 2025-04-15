@@ -77,6 +77,7 @@ async def upload_faq(file: UploadFile = File(...)):
         df = pd.read_csv(io.StringIO(file_content.decode("utf-8")))
         log_event("PREPROCESS", "Uploaded FAQ file is being processed")
         uploaded_faq_data = handle_faqs(df)
+        log_event("PREPROCESS", "Uploaded FAQ file is processed and ready")
 
         return {"message": "FAQ file uploaded and processed successfully"}
 
