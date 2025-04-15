@@ -33,8 +33,8 @@ def search_faq(query, faq_source):
     try:
         if faq_source == "default":
             if not os.path.exists(default_faq_path):
-                raise ValueError("Default FAQ file not found.")
                 log_event("ERROR", "Default FAQ file not found.")
+                raise ValueError("Default FAQ file not found.")
 
             df = pd.read_csv(default_faq_path)
             index_path = default_index_path
@@ -46,8 +46,8 @@ def search_faq(query, faq_source):
             df = pd.read_csv(uploaded_faq_path)
             index_path = uploaded_index_path
         else:
-            raise ValueError("Invalid FAQ source. Choose 'default' or 'uploaded'.")
             log_event("ERROR", "Invalid FAQ source. Choose 'default' or 'uploaded'.")
+            raise ValueError("Invalid FAQ source. Choose 'default' or 'uploaded'.")
             
         if not os.path.exists(index_path):
             return None, 0  
