@@ -50,6 +50,7 @@ def search_faq(query, faq_source):
             raise ValueError("Invalid FAQ source. Choose 'default' or 'uploaded'.")
             
         if not os.path.exists(index_path):
+            log_event("ERROR", f"{faq_source} FAQ index not found.")
             return None, 0  
 
         index = faiss.read_index(index_path)
