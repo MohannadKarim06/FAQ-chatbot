@@ -96,6 +96,16 @@ def embed_questions(df):
     faq_questions = df["question"].tolist()
     embeddings = get_embedding(faq_questions)
 
+    os.makedirs(os.path.dirname(uploaded_faiss_index_file), exist_ok=True)
+
+    index = faiss.IndexFlatL2(embeddings.shape[1])
+    index.add(embeddings)
+
+    faiss.write_index(index, uploaded_faiss_index_file)
+
+    return None
+
+
     index = faiss.IndexFlatL2(embeddings.shape[1])
     index.add(embeddings)
 
@@ -105,6 +115,7 @@ def embed_questions(df):
 
 def save_file(df):
     log_event("SAVE", f"Saving processed FAQ CSV to: {uploaded_faqs}")
+    os.makedirs(os.path.dirname(uploaded_faqs), exist_ok=True)
     df.to_csv(uploaded_faqs, index=False)
     log_event("SAVE", "FAQ CSV saved successfully.")
 
