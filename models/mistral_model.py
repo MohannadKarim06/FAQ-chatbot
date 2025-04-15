@@ -2,45 +2,43 @@ import requests
 import os, sys
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from logs.logger import log_event
 
-API_URL = os.getenv("API_URL")
-API_TOKEN = os.getenv("API_TOKEN")
+API_URL = "https://api.together.xyz/v1/chat/completions"
+API_KEY = os.getenv("TOGETHER_API_KEY")  # replace with your Together API key
 
-headers = {
-    "Authorization": f"Bearer {API_TOKEN}"
-}
+def model_response(prompt: str, instructions: str = None):
+    try:
+        messages = []
 
-def model_response(text: str):
-    full_prompt = text
-    payload = {
-        "inputs": full_prompt,
-        "parameters": {
+        if instructions:
+            messages.append({"role": "system", "content": instructions})
+        
+        messages.append({"role": "user", "content": prompt})
+
+        payload = {
+            "model": "mistralai/Mistral-7B-Instruct-v0.1",
+            "messages": messages,
             "temperature": 0.1,
             "top_p": 0.95,
-            "max_new_tokens": 200,
+            "max_tokens": 256,
             "repetition_penalty": 1.1
         }
-    }
 
-    response = requests.post(API_URL, headers=headers, json=payload)
+        headers = {
+            "Authorization": f"Bearer {API_KEY}",
+            "Content-Type": "application/json"
+        }
 
-    if response.status_code != 200:
-        log_event("ERROR", f"Hugging Face API Error: {response.status_code} {response.text}")
-        raise Exception(f"Hugging Face API Error: {response.status_code} {response.text}")
+        response = requests.post(API_URL, headers=headers, json=payload)
 
-    try:
-        output = response.json()
-        generated_text = output[0].get("generated_text", "").strip()
+        if response.status_code != 200:
+            log_event("ERROR", f"Together AI API Error: {response.status_code} {response.text}")
+            raise Exception(f"Together AI API Error: {response.status_code} {response.text}")
 
-        if generated_text.startswith(full_prompt):
-            generated_text_processed = generated_text[len(full_prompt):].strip()
-        else:
-            generated_text_processed = generated_text
+        data = response.json()
+        return data["choices"][0]["message"]["content"].strip()
 
     except Exception as e:
-        log_event("ERROR", f"An error occurred when processing model output: {e}")
-        raise Exception("Failed to process response from model")
-
-    return generated_text_processed
+        log_event("ERROR", f"Failed to get response from Together AI: {e}")
+        return "Sorry, something went wrong getting a response from the model."
