@@ -32,16 +32,19 @@ def get_embedding(texts):
 def search_faq(query, faq_source):
     try:
         if faq_source == "default":
+            
+            log_event("DEBUG", f"Looking for default FAQ file at: {default_faq_path}")
             if not os.path.exists(default_faq_path):
-                log_event("ERROR", "Default FAQ file not found.")
+                log_event("ERROR", f"Default FAQ file not found at: {default_faq_path}.")
                 raise ValueError("Default FAQ file not found.")
 
             log_event("DEBUG", f"Looking for default FAQ file at: {default_faq_path}")
             df = pd.read_csv(default_faq_path)
             index_path = default_index_path
         elif faq_source == "uploaded":
+            log_event("DEBUG", f"Looking for uploaded FAQ file at: {uploaded_faq_path}")    
             if not os.path.exists(uploaded_faq_path):
-                log_event("ERROR", "Uploaded FAQ file not found.")
+                log_event("ERROR", f"Uploaded FAQ file not found at: {uploaded_faq_path}.")
                 return None, 0  
                 
             log_event("DEBUG", f"Looking for uploaded FAQ file at: {uploaded_faq_path}")    
@@ -50,7 +53,8 @@ def search_faq(query, faq_source):
         else:
             log_event("ERROR", "Invalid FAQ source. Choose 'default' or 'uploaded'.")
             raise ValueError("Invalid FAQ source. Choose 'default' or 'uploaded'.")
-            
+        
+        log_event("DEBUG", f"Looking for {faq_source} index at {index_path}:)            
         if not os.path.exists(index_path):
             log_event("ERROR", f"{faq_source} FAQ index not found.")
             return None, 0  
