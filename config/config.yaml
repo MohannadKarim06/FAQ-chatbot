@@ -3,8 +3,8 @@ models:
   chatbot_model: "mistral_7b"
 
 data:
-  default_faqs: "/app/data/default_faqs.csv"
-  uploaded_faqs: "/app/data/uploaded_faqs.csv"
-  embeddings: "/app/data/embeddings"
-  default_faqs_embedddings: "/app/data/embeddings/default_faqs_embeddings.bin"
-  uploaded_faqs_embedddings: "/app/data/embeddings/uploaded_faqs_embeddings.bin"
+  default_faqs: "/data/default_faqs.csv"
+  uploaded_faqs: "/data/uploaded_faqs.csv"
+  embeddings: "/data/embeddings"
+  default_faqs_embedddings: "/data/embeddings/default_faqs_embeddings.bin"
+  uploaded_faqs_embedddings: "/data/embeddings/uploaded_faqs_embeddings.bin"
