@@ -17,7 +17,7 @@ def model_response(text: str):
     payload = {
         "inputs": full_prompt,
         "parameters": {
-            "temperature": 0.0,
+            "temperature": 0.1,
             "top_p": 0.95,
             "max_new_tokens": 200,
             "repetition_penalty": 1.1
