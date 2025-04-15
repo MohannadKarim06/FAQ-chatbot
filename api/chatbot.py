@@ -16,7 +16,15 @@ def chat_with_bot(prompt, faq_source):
    except Exception as e:
       log_event("ERROR", f"an error happend while searching faqs: {e}")
    
+
    formatted_history = "\n".join([f"User: {msg['user']}\nBot: {msg['bot']}" for msg in conversation_history])
+
+   if score < 1:
+      relevance_score = "High Relevance"
+   elif score < 1.5:
+      relevance_score= "Medium Relevance"
+   else:
+      relevance_score = "Low Relevance"
 
    instructions = f"""
 You are an AI assistant that helps users by engaging in conversation and answering support-related questions using a provided FAQ knowledge base.
@@ -48,9 +56,11 @@ You are an AI assistant that helps users by engaging in conversation and answeri
 "{prompt}"
 
 ### 📄 Retrieved FAQ Answer:
-"{retrieved_answer}" (Relevance Score: {score})
+"{retrieved_answer}" (Relevance Score: {relevance_score})
 
-Your job: respond naturally using the above guidelines.
+---
+
+### 🗨️ Your Response:
 """
    
    try:
