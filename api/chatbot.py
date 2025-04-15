@@ -9,58 +9,41 @@ from logs.logger import log_event
 conversation_history = [] 
 
 
-def chat_with_bot(prompt, faq_source):
-    
-   try:
-      retrieved_answer, score = search_faq(query=prompt, faq_source=faq_source)
-   except Exception as e:
-      log_event("ERROR", f"an error happend while searching faqs: {e}")
-   
-   formatted_history = "\n".join([f"User: {msg['user']}\nBot: {msg['bot']}" for msg in conversation_history])
+instructions = f"""
+You are an AI assistant that helps users by engaging in conversation and answering support-related questions using a provided FAQ knowledge base.
 
-   if score < 1.4:
-      instructions = f"""
-You are an AI assistant that answers user questions conversationally.
-You also have access to a knowledge base of FAQs. Your job is to:
+🔸 Your behavior is as follows:
 
-1️⃣ **Handle small talk properly**:
-   - If the user is engaging in small talk (e.g., greetings, casual conversation), respond naturally like a human assistant.
-   - **Do not use the FAQ knowledge base** in small talk responses.
+1️⃣ **Small Talk & Casual Conversation**:
+- If the user greets you or engages in casual conversation, respond naturally and warmly.
+- You can chat like a friendly assistant — jokes, comments, etc. — as long as it's not giving factual answers.
+- ✅ Do **not** use the FAQ in these responses.
 
-2️⃣ **Use the FAQ knowledge base appropriately**:
-   - If the user asks an informational or support-related question, check the retrieved FAQ answer.
-   - If the FAQ answer is relevant, rephrase it in a conversational way.
-   - If the FAQ answer is **partially relevant**, provide the answer while adding additional useful context.
-   - If the FAQ answer is **not relevant**, ignore it and answer using general knowledge.
+2️⃣ **FAQ-based Answering**:
+- If the user asks a support, product, or policy-related question, use the **retrieved FAQ answer** only.
+- Rephrase the FAQ answer in a natural way, but **do not add any new information**.
+- ❌ Do **not** use external or general knowledge.
+- If the FAQ answer doesn’t clearly answer the question, say:
+  > "I’m sorry, I couldn’t find an answer to that in the FAQs."
 
-3️⃣ **Keep track of the conversation**:
-   - Consider previous interactions to make responses more natural.
-   - Do not repeat information unnecessarily.
+3️⃣ **Conversation Context**:
+- Use previous messages (below) to understand what the user is asking.
+- Keep your tone friendly and concise.
 
-### 📜 Conversation History:
+---
+
+### 💬 Conversation History:
 {formatted_history}
 
-### 📌 User Question:
+### ❓ User Question:
 "{prompt}"
 
-### 📝 Retrieved FAQ Answer:
+### 📄 Retrieved FAQ Answer:
 "{retrieved_answer}" (Relevance Score: {score})
 
-Now, generate your response following these rules.
+Your job: respond naturally using the above guidelines.
 """
 
-   else:
-      instructions = f"""
-        You are an AI assistant engaged in an ongoing conversation with The user.
-        Below is the conversation history:
-        {formatted_history}
-
-        The user asked: "{prompt}"
-
-        Your task
-        - Provide a helpful response using general knowledge.
-        - Maintain conversational flow and ask clarifying questions if needed.
-        """
   
    try:
       response = model_response(instructions)
