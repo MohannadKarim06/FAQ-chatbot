@@ -102,16 +102,9 @@ def embed_questions(df):
     index.add(embeddings)
 
     faiss.write_index(index, uploaded_faiss_index_file)
-
-    return None
-
-
-    index = faiss.IndexFlatL2(embeddings.shape[1])
-    index.add(embeddings)
-
-    faiss.write_index(index, uploaded_faiss_index_file)
     log_event("EMBED", f"FAISS index written to: {uploaded_faiss_index_file}")
 
+    return None 
 
 def save_file(df):
     log_event("SAVE", f"Saving processed FAQ CSV to: {uploaded_faqs}")
@@ -119,6 +112,7 @@ def save_file(df):
     df.to_csv(uploaded_faqs, index=False)
     log_event("SAVE", "FAQ CSV saved successfully.")
 
+    return None
 
 def handle_faqs(df):
     log_event("START", "Starting FAQ file preprocessing...")
