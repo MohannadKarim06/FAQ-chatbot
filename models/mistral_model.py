@@ -5,7 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from logs.logger import log_event
 
 API_URL = "https://api.together.xyz/v1/chat/completions"
-API_KEY = os.getenv("TOGETHER_API_KEY")  # replace with your Together API key
+API_KEY = os.getenv("API_KEY")  # replace with your Together API key
 
 def model_response(prompt: str, instructions: str = None):
     try:
