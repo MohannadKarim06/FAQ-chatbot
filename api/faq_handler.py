@@ -21,6 +21,7 @@ from transformers import AutoTokenizer, AutoModel
 import torch
 from config.config import ConfigManger
 import sys
+from logs.logger import log_event
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -105,3 +106,4 @@ def handle_faqs(df):
 
     except Exception as e:
         raise ValueError(f"An error occurred while preprocessing FAQs: {e}")
+        log_event("ERROR", f"An error occurred while preprocessing FAQs: {e}")
