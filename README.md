@@ -5,8 +5,7 @@
 ---
 
 ### 🚀 Live Demo  
-- **Frontend (React):** [your-ui-url.onrender.com](#)  
-- **API (FastAPI):** [your-api-url.onrender.com/docs](#)
+- **Frontend (React):** [https://end-to-end-faq-chatbot.vercel.app/](#)  
 
 ---
 
@@ -35,26 +34,6 @@
 
 ---
 
-### 📁 Project Structure
-
-```
-faq-chatbot/
-├── backend/
-│   ├── main.py                  # FastAPI app
-│   ├── logic/                   # Embedding, translation, summarization, search
-│   ├── utils/                   # Text & CSV utilities
-│   ├── config.py / config.json  # API keys, paths
-│   ├── logger/                  # Event logging
-│   └── requirements.txt
-├── frontend/
-│   ├── src/                     # React + Chakra UI app
-│   └── render.yaml              # Frontend deploy config
-├── Dockerfile
-├── render.yaml                  # Backend deploy config
-```
-
----
-
 ### 🧪 How It Works
 
 1. **Upload** your FAQ CSV (columns: `question`, `answer`)
@@ -65,7 +44,7 @@ faq-chatbot/
 3. **Ask a question** in the chat box
 4. The system:
    - Finds the most semantically similar FAQ
-   - Sends it (and your question) to the LLM via Hugging Face API
+   - Sends it (and your question) to the LLM via Together API
    - Translates (if needed) and displays the answer
 
 ---
@@ -87,65 +66,17 @@ faq-chatbot/
 
 ---
 
-### ⚙️ Setup Instructions
-
-#### 1. Clone the repo
-```bash
-git clone https://github.com/yourusername/faq-chatbot.git
-cd faq-chatbot
-```
-
-#### 2. Backend Setup (FastAPI)
-```bash
-cd backend
-pip install -r requirements.txt
-uvicorn main:app --reload
-```
-
-#### 3. Frontend Setup (React + Chakra)
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-#### 4. Set Environment Variables (API keys)
-Use `.env` or set in `config.py`:
-```env
-API_TOKEN=your_huggingface_token
-API_URL=https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.1
-```
-
----
-
-### 🐳 Deployment with Docker + Render
+### 🐳 Deployment with Docker + fly.io
 
 #### Backend
 - Push to GitHub
-- Connect to [Render.com](https://render.com)
-- Use the included `Dockerfile` and `render.yaml`
+- Use the included `Dockerfile` and `fly.toml`
 - Add API env vars in Render dashboard
 
-#### Frontend
-- Connect `frontend/` to a new Render static site
-- Use `render.yaml` in `frontend/`
-
----
-
-### 📈 Future Enhancements
-
-- Streaming LLM output (OpenAI-style typing)
-- Full conversation history + multi-turn context
-- Document classification or intent detection
-- Database of FAQs with upload manager
-
----
 
 ### ✍️ Author  
-**Your Name**  
-_Machine Learning Engineer & NLP Developer_  
-[Portfolio](https://yourportfolio.com) • [LinkedIn](https://linkedin.com/in/yourusername)
+**Mohannad Karim**  
+_NLP & Machine Learning Engineer | MLOps_  
+[Portfolio](https://www.upwork.com/freelancers/~01683e506def8e06a2?mp_source=share) 
 
 ---
-
-Let me know if you want a version tailored for Upwork proposals or case studies. Ready for the next project when you are!
